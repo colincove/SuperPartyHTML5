@@ -1,4 +1,6 @@
+var numberOfScripts = 0;
 function getScript(url,success){
+    numberOfScripts++;
     var script = document.createElement('script');
     script.src = url;
     var head = document.getElementsByTagName('head')[0], done=false;
@@ -14,11 +16,27 @@ function getScript(url,success){
 }
 
 function onScriptSuccess(){
+    if(--numberOfScripts==0)
+    {
+        Looper.setFps(30);
+        Looper.start();
 
+        var body = $('body')[0];
+        var counter = document.createElement("span");
+        body.appendChild(counter);
+
+        var interval = 0;
+
+        Looper.addEventListener(Looper.EVENT_DRAW_TICK, function(){
+            interval++;
+            counter.innerHTML = interval;
+        });
+    }
 }
 
 getScript('superParty/lib/uuid.js', onScriptSuccess);
-getScript('superParty/src/base/hook.js', onScriptSuccess);
+getScript('superParty/src/base/events.js', onScriptSuccess);
 getScript('superParty/src/base/stage.js', onScriptSuccess);
+getScript('superParty/src/base/looper.js', onScriptSuccess);
 
 
