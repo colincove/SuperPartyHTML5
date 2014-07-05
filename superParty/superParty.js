@@ -62,7 +62,15 @@ SuperParty.setup = function(callback)
 {
 
     SuperParty.setupCallback = callback;
-    SuperParty.loadScripts(SuperParty.init, ['superParty/lib/uuid.js', 'superParty/src/base/events.js','superParty/src/base/stage.js', 'superParty/src/base/looper.js']);
+    SuperParty.loadScripts(SuperParty.init, [
+	'superParty/lib/uuid.js', 
+	'superParty/src/base/events.js',
+	'superParty/src/base/linkedList.js',
+	'superParty/src/base/stage.js', 
+	'superParty/src/base/looper.js',
+	'superParty/src/rendering/rendering.js',
+	'superParty/src/physics/physics.js',
+	]);
 }
 
 
@@ -72,6 +80,14 @@ function removeFromList(list, obj)
     if(index>=0)
     {
         list.splice(index, 1);
+    }
+}
+function Enum() 
+{
+	this['size'] = arguments.length; 
+    for (var i in arguments) 
+	{
+        this[arguments[i]] = i;
     }
 }
 
