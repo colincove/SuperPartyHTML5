@@ -20,39 +20,30 @@ Looper.timer				= null;
 Looper.markStop 			= false;
 Looper.loopTime 			= Looper.DEFAULT_LOOP_TIME;
 
-Looper.tick = (function()
+Looper.now = 0;
+Looper.dt   = 0;
+Looper.last = (new Date).getTime();
+Looper.step = 1/30;
+
+function frame() {
+
+}
+Looper.tick = function()
 {
-	//http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/
-
-	var loops = 0;
-	var skipTicks = Looper.loopTime;
-	var maxFrameSkip = 10;
-	Looper.nextGameTick = (new Date).getTime();
-	  
-	return function()
+	Looper.now 	= (new Date).getTime();
+	Looper.dt 	= Looper.dt + Math.min(1, (Looper.now - Looper.last) / 1000);
+	while(Looper.dt > Looper.step) 
 	{
-		loops = 0;
-			    
-		while ((new Date).getTime() > Looper.nextGameTick && loops < maxFrameSkip) 
-		{
-			Looper.emitEvent(Looper.EVENT_LOGIC_TICK);
-			Looper.nextGameTick += skipTicks;
-			loops++;
-		}   
-		if (loops)
-		{
-			Looper.emitEvent(Looper.EVENT_DRAW_TICK);
-
-			if(Looper.markStop == true)
-			{
-				Looper.cancelLoop();
-			}
-		}
-	};
-})();
+		Looper.dt = Looper.dt - Looper.step;
+		Looper.emitEvent(Looper.EVENT_LOGIC_TICK, {step:Looper.step});
+	}
+	Looper.emitEvent(Looper.EVENT_DRAW_TICK);
+	Looper.last = Looper.now;
+	requestAnimationFrame(Looper.tick);
+}
 Looper.start = function()
 {
-	Looper.timer = setInterval(Looper.tick, 0);
+	requestAnimationFrame(Looper.tick);
 }
 Looper.stop = function()
 {
@@ -71,3 +62,6 @@ Looper.setFps = function(fps)
 	//convert frames per second into milliseconds to be used by timer
 	Looper.loopTime = 1000/fps;
 }
+
+
+
