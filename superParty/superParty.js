@@ -26,11 +26,14 @@ function onScriptSuccess(){
         body.appendChild(counter);
 
         var interval = 0;
-
+        var lastDraw=0;
+        
         Looper.addEventListener(Looper.EVENT_DRAW_TICK, function(){
             interval++;
-            counter.innerHTML = interval;
+            counter.innerHTML = interval+" : "+(lastDraw-(new Date).getTime())/1000;
+            lastDraw=(new Date).getTime();
         });
+        
     }
 }
 

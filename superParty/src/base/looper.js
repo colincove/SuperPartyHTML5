@@ -1,45 +1,55 @@
 var Looper = {};
 
+//-------------------------
+//Static Variables
+//-------------------------
 Looper.DEFAULT_LOOP_TIME 	= 100;
+//-------------------------
+//Events
+//-------------------------
 Looper.EVENT_LOGIC_TICK		= "EVENT_LOGIC_TICK";
 Looper.EVENT_DRAW_TICK		= "EVENT_DRAW_TICK";
-Looper.timer				= null;
 
+//-------------------------
+//Setup
+//-------------------------
 Events.setup(Looper);
+Looper.timer				= null;
 
 //will cause loop to fall out when set to true
 Looper.markStop 			= false;
 Looper.loopTime 			= Looper.DEFAULT_LOOP_TIME;
 
-Looper.tick = function()
+Looper.tick = (function()
 {
 	//http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/
 
 	var loops = 0;
 	var skipTicks = Looper.loopTime;
 	var maxFrameSkip = 10;
-	var nextGameTick = (new Date).getTime();
+	Looper.nextGameTick = (new Date).getTime();
 	  
-	
+	return function()
+	{
 		loops = 0;
-		    
-		while ((new Date).getTime() > nextGameTick && loops < maxFrameSkip) 
+			    
+		while ((new Date).getTime() > Looper.nextGameTick && loops < maxFrameSkip) 
 		{
 			Looper.emitEvent(Looper.EVENT_LOGIC_TICK);
-			nextGameTick += skipTicks;
+			Looper.nextGameTick += skipTicks;
 			loops++;
 		}   
 		if (loops)
 		{
-		 	Looper.emitEvent(Looper.EVENT_DRAW_TICK);
+			Looper.emitEvent(Looper.EVENT_DRAW_TICK);
 
-		 	if(Looper.markStop == true)
-		 	{
-		 		Looper.cancelLoop();
-		 	}
+			if(Looper.markStop == true)
+			{
+				Looper.cancelLoop();
+			}
 		}
-		
-}
+	};
+})();
 Looper.start = function()
 {
 	Looper.timer = setInterval(Looper.tick, 0);
