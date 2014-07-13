@@ -1,10 +1,12 @@
 var Physics 			= {};
 Physics.bodies 			= {};
 Physics.bodies.lists 	= {allBodies:[]};
+Physics.solver 			= function(body1, body2){};
 
 //-------------------------
 //Events
 //-------------------------
+Physics.EVENT_ON_LOITER = "EVENT_ON_LOITER";//when a physics body enters a trigger
 Physics.EVENT_ON_ENTER 	= "EVENT_ON_ENTER";//when a physics body enters a trigger
 Physics.EVENT_ON_EXIT 	= "EVENT_ON_EXIT";//when a physics body exits a trigger
 Physics.EVENT_COLLIDE 	= "EVENT_COLLIDE";//when 2 physics bodies collide
@@ -18,6 +20,44 @@ var BodyTypes 			= new Enum('CIRCLE', 'BOX', 'POLYGON', 'POINT');
 //Setup
 //-------------------------
 
+Physics.onCollision = function(body1, body2)
+{
+	if(body1.isTrigger || body2.isTrigger) 
+	{
+		var body 	= body1.isTrigger ? body2:body1;
+		var trigger = body1.isTrigger ? body1:body2;
+
+		if(trigger.collisionTable[body.UUID])
+		{
+			trigger.emitEvent(Physics.EVENT_ON_LOITER, {other:body});
+		}
+		else
+		{
+			trigger.emitEvent(Physics.EVENT_ON_ENTER, {other:body});
+			trigger.collisionTable[body.UUID] = body;
+		}
+	}
+	else
+	{
+		//2 physical bodies have collided. Resolve the collision in the physics world. 
+		Physics.solver(body1, body2);
+	}
+}
+//Collision engine calls this when 2 bodies are NOT touching.
+Physics.collisionCleanup = function(body1, body2)
+{
+	if(body1.isTrigger || body2.isTrigger) 
+	{
+		var body 	= body1.isTrigger ? body2:body1;
+		var trigger = body1.isTrigger ? body1:body2;
+
+		if(trigger.collisionTable[body.UUID])
+		{
+			trigger.emitEvent(Physics.EVENT_ON_EXIT, {other:body});
+			trigger.collisionTable[body.UUID] = undefined;
+		}
+	}
+}
 //instantiate lists used to keep track of bodies
 for(var i = 0; i < BodyTypes.size; i++)
 {
@@ -37,7 +77,7 @@ Physics.bodies.addBody = function(body)
 }
 Physics.bodies.config = 
 	{
-		collisionList:[],
+		collisionTable:{},
 		type:BodyTypes.POINT,
 		sleeping:false,
 		isTrigger:false,
@@ -89,13 +129,13 @@ Physics.bodies.polygonConfig = $.extend( true, Physics.bodies.config,
 	} );
 Physics.bodies.getPoint = function(config)
 {
-	var body = $.extend( true, Physics.bodies.config, config );
+	var body = $.extend( true, Physics.bodies.config, config, {UUID:UUID.create()} );
 	this.addBody(body);
 	return body;
 }
 Physics.bodies.getCircle = function(config)
 {
-	var body = $.extend( true, Physics.bodies.circleConfig, config );
+	var body = $.extend( true, Physics.bodies.circleConfig, config, {UUID:UUID.create()} );
 	this.addBody(body);
 	body.getWidth = function()
 	{
@@ -108,7 +148,7 @@ Physics.bodies.getCircle = function(config)
 }
 Physics.bodies.getBox = function(config)
 {
-	var body = $.extend( true, Physics.bodies.boxConfig, config );
+	var body = $.extend( true, Physics.bodies.boxConfig, config, {UUID:UUID.create()} );
 	this.addBody(body);
 	body.getWidth = function()
 	{
@@ -121,6 +161,6 @@ Physics.bodies.getBox = function(config)
 }
 Physics.bodies.getPolygon = function(config)
 {
-	var body = $.extend( true, Physics.bodies.polygonConfig, config );
+	var body = $.extend( true, Physics.bodies.polygonConfig, config, {UUID:UUID.create()} );
 	this.addBody(body);
 }

@@ -70,6 +70,7 @@ SuperParty.setup = function(callback)
 	'superParty/src/base/looper.js',
 	'superParty/src/rendering/rendering.js',
 	'superParty/src/physics/physics.js',
+    'superParty/src/physics/collisions.js'
 	]);
 }
 
