@@ -1,10 +1,17 @@
 var Physics 			= {};
-setupPhysicsMethods(Physics);
+
+//-------------------------
+//Enums
+//-------------------------
+var BodyTypes 			= new Enum('CIRCLE', 'BOX', 'POLYGON', 'POINT');
+
+
 
 Physics.bodies 			= {};
 Physics.bodies.lists 	= {allBodies:[]};
 Physics.solver 			= {solve:function(body1, body2){}};
 
+setupPhysicsMethods(Physics);
 //-------------------------
 //Events
 //-------------------------
@@ -13,10 +20,7 @@ Physics.EVENT_ON_ENTER 	= "EVENT_ON_ENTER";//when a physics body enters a trigge
 Physics.EVENT_ON_EXIT 	= "EVENT_ON_EXIT";//when a physics body exits a trigger
 Physics.EVENT_COLLIDE 	= "EVENT_COLLIDE";//when 2 physics bodies collide
 
-//-------------------------
-//Enums
-//-------------------------
-var BodyTypes 			= new Enum('CIRCLE', 'BOX', 'POLYGON', 'POINT');
+
 
 //-------------------------
 //Setup

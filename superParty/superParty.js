@@ -69,6 +69,9 @@ SuperParty.setup = function(callback)
 	'superParty/src/base/stage.js', 
 	'superParty/src/base/looper.js',
 	'superParty/src/rendering/rendering.js',
+	'superParty/src/rendering/simpleRenderer.js',
+	'superParty/src/resources/resources.js',
+	'superParty/src/resources/res.js',
 	'superParty/src/physics/physics.js',
     'superParty/src/physics/collisions.js',
 	'superParty/src/physics/simpleSolver.js'
@@ -86,11 +89,18 @@ function removeFromList(list, obj)
 }
 function Enum() 
 {
-	this['size'] = arguments.length; 
+	this.size = arguments.length; 
     for (var i in arguments) 
 	{
         this[arguments[i]] = i;
     }
+}
+window.onload = function()
+{
+	SuperParty.setup(function()
+	{
+		SuperParty.onSetupComplete();
+	});
 }
 
 

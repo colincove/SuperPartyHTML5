@@ -9,8 +9,7 @@ Looper.addEventListener(Looper.EVENT_DRAW_TICK, Rendering.doRender);
 //-------------------------
 //Standard Layers
 //-------------------------
-var RenderLayers = {};
-
+var RenderLayers 	= {};
 //-------------------------
 //Setup
 //-------------------------
@@ -23,6 +22,7 @@ function setupRenderingMethods(Rendering)
 {
 	Rendering.rendererConfig = 
 		{
+			res:null,
 			draw:function(drawInfo){},
 			visible:true,
 			layer:0,
@@ -42,16 +42,13 @@ function setupRenderingMethods(Rendering)
 			layer.render({});
 		}
 	}
-	Rendering.register = function(name, renderFactory)
+	Rendering.register = function(name, renderer)
 	{
-		this.renderers[name] 			= renderer;
+		this.renderers[name] = renderer;
 	}
-	Rendering.getRenderer = function(name)
+	Rendering.getRenderer = function(config)
 	{	
-		//return if there is no render factory for given name
-		if(!Rendering.renderers[name]) return;
-		
-		var renderer = $.extend( true, Rendering.rendererConfig, Rendering.renderers[name]());
+		var renderer = $.extend( true, Rendering.rendererConfig, config);
 		
 		return renderer;
 	}
