@@ -2,7 +2,7 @@ var Collisions = {};
 
 setupCollisionMethods(Collisions);
 Looper.addEventListener(Looper.EVENT_LOGIC_TICK, Collisions.doCollisions);
-//mapping the type of bodies to the methods used to calculate thier collosions
+//mapping the type of bodies to the methods used to calculate their collisions
 Collisions.methods = {};
 
 Collisions.methods[BodyTypes.POINT] = {};
@@ -35,6 +35,7 @@ function setupCollisionMethods(obj)
 				var body2 = bodyList[j];
 
 				if(body1.isTrigger && body2.isTrigger) return;
+				if(body1.static && body2.static) return;
 
 				//order the bodies by type
 				if(body2.type < body1.type)
@@ -50,7 +51,7 @@ function setupCollisionMethods(obj)
 
 				if(collision)
 				{
-					Physics.onCollision(body1, body2);
+					Physics.onCollision(body1, body2, body1.type | body2.type);
 				}
 				else
 				{
