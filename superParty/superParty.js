@@ -74,7 +74,10 @@ SuperParty.setup = function(callback)
 	'superParty/src/resources/res.js',
 	'superParty/src/physics/physics.js',
     'superParty/src/physics/collisions.js',
-	'superParty/src/physics/simpleSolver.js'
+	'superParty/src/physics/simpleSolver.js',
+    'superParty/src/input/input.js',
+    'superParty/src/input/keyInput.js',
+    'superParty/src/input/standardDirectionalInput.js'
 	]);
 }
 

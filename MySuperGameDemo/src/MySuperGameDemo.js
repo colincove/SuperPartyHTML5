@@ -1,4 +1,4 @@
-SuperParty.onSetupComplete = init;
+SuperParty.onSetupComplete = doSetup;
 
 
 
@@ -16,21 +16,33 @@ function init()
 }
 function startGame(e)
 {
-	
+
+    var directionInput = Input.getStandardDirectionInput({wasd:true});
+
+    var x=0;
+    var y=0;
+
+    directionInput.addEventListener(Input.EVENT_KEYUP_DOWN, function(e){y-=5;});
+    directionInput.addEventListener(Input.EVENT_KEYDOWN_DOWN, function(e){y+=5;});
+    directionInput.addEventListener(Input.EVENT_KEYRIGHT_DOWN, function(e){x+=5;});
+    directionInput.addEventListener(Input.EVENT_KEYLEFT_DOWN, function(e){x-=5;});
 
 	var canvas 	= Stage.canvas;
     var context = Stage.context;
 
-	context.drawImage(R.drawable.testImage, 0, 0, 100, 100);
+	Looper.addEventListener(Looper.EVENT_DRAW_TICK, draw);
 	
-    context.beginPath();
-    context.moveTo(0, 0);
-    context.lineTo(30, 30);
-    context.lineWidth = 10;
+	function draw()
+    {
+        context.drawImage(R.drawable.testImage, 0, 0, 100, 100);
+    
+        context.beginPath();
+        context.moveTo(x, y);
+        context.lineTo(30+x, 30+y);
+        context.lineWidth = 10;
 
-    // set line color
-    context.strokeStyle = '#ff0000';
-    context.stroke();
-	
-	
+        // set line color
+        context.strokeStyle = '#ff0000';
+        context.stroke();
+    }
 }
