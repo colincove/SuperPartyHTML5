@@ -1,29 +1,47 @@
-//-------------------------
-//Events
-//-------------------------
-Input.EVENT_KEYRIGHT_DOWN 	= 'EVENT_KEYRIGHT_DOWN';
-Input.EVENT_KEYRIGHT_UP 	= 'EVENT_KEYRIGHT_UP';
-Input.EVENT_KEYLEFT_DOWN 	= 'EVENT_KEYLEFT_DOWN';
-Input.EVENT_KEYLEFT_UP 		= 'EVENT_KEYLEFT_UP';
-Input.EVENT_KEYUP_DOWN 		= 'EVENT_KEYUP_DOWN';
-Input.EVENT_KEYUP_UP 		= 'EVENT_KEYUP_UP';
-Input.EVENT_KEYDOWN_DOWN 	= 'EVENT_KEYDOWN_DOWN';
-Input.EVENT_KEYDOWN_UP 		= 'EVENT_KEYDOWN_UP';
-
-
 
 Input.configStandardDirectionInput = 
 {
 	wasd:false, 
-	arrows:true
+	arrows:true, 
+	up:{
+		isDown:false,
+		onPress:function(){},
+		onRelease:function(){}
+	},
+	down:{
+		isDown:false,
+		onPress:function(){},
+		onRelease:function(){}
+	},
+	right:{
+		isDown:false,
+		onPress:function(){},
+		onRelease:function(){}
+	},
+	left:{
+		isDown:false,
+		onPress:function(){},
+		onRelease:function(){}
+	}, 
+	handleInput:function(dir, key)
+	{
+		if(dir == InputDir.UP)
+		{
+			key.onRelease();
+			key.isDown = false;
+		}
+		else if(!key.isDown)
+		{
+			key.onPress();
+			key.isDown = true;
+		}
+	}
 };
 
 Input.getStandardDirectionInput = function(config)
 {
 
 	var obj = $.extend( false, Input.configStandardDirectionInput, config);
-
-	Events.setup(obj);
 
 	var keyInput = Input.getKeyInput();
 
@@ -34,34 +52,29 @@ Input.getStandardDirectionInput = function(config)
 
 	keyInput.addEventListener(Input.EVENT_KEY_UP, function(e)
 	{
-		checkAndEmit(e.keyCode, InputDir.UP);
-	});
-
-	Looper.addEventListener(Looper.EVENT_LOGIC_TICK, function(e)
-	{
-		
+		checkAndEmit(e, InputDir.UP);
 	});
 
 	function checkAndEmit(e, dir)
 	{
-		dir = dir || InputDir.UP;
 
 		if((obj.arrows && e.keyCode == 37)  || (obj.wasd && e.keyCode == 65))
 		{
-			obj.emitEvent(dir == InputDir.UP ? Input.EVENT_KEYLEFT_UP:Input.EVENT_KEYLEFT_DOWN, e);
+			obj.handleInput(dir, obj.left);
 		}
 		else if((obj.arrows && e.keyCode == 39)  || (obj.wasd && e.keyCode == 68))
 		{
-			obj.emitEvent(dir == InputDir.UP ? Input.EVENT_KEYRIGHT_UP:Input.EVENT_KEYRIGHT_DOWN, e);
+			obj.handleInput(dir, obj.right);
 		}
 		else if((obj.arrows && e.keyCode == 38)  || (obj.wasd && e.keyCode == 87))
 		{
-			obj.emitEvent(dir == InputDir.UP ? Input.EVENT_KEYUP_UP:Input.EVENT_KEYUP_DOWN, e);
+			obj.handleInput(dir, obj.up);
 		}
 		else if((obj.arrows && e.keyCode == 40)  || (obj.wasd && e.keyCode == 83))
 		{
-			obj.emitEvent(dir == InputDir.UP ? Input.EVENT_KEYDOWN_UP:Input.EVENT_KEYDOWN_DOWN, e);
+			obj.handleInput(dir, obj.down);
 		}
+		
 	}
 
 	return obj;
