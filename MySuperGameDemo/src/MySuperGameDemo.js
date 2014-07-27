@@ -37,14 +37,21 @@ function startGame(e)
 	
 	Physics.startDebugDraw();
 	
-	var testBody  = Physics.bodies.getCircle({radius:50, isTrigger:false});
-	var charBody  = Physics.bodies.getCircle({radius:5, isTrigger:true});
+	var testBody  = Physics.bodies.getCircle({radius:50,mass:5, isTrigger:false});
+	var charBody  = Physics.bodies.getCircle({radius:5, isTrigger:false, damp:0.2});
+	var triggerBody  = Physics.bodies.getCircle({radius:20, isTrigger:true});
 	
 	charBody.transform.position.x = x;
 	charBody.transform.position.y = y;
 	
+	triggerBody.transform.position.x = 100;
+	triggerBody.transform.position.y = 200;
+	
 	function draw()
     {
+		x = charBody.transform.position.x;
+		y = charBody.transform.position.y;
+		
 		//reset canvas
 		Stage.context.rect(0,0,canvas.width,canvas.height);
 		context.setFillStyle="black";
@@ -64,29 +71,28 @@ function startGame(e)
     }
     function update()
     {
-		
-
+		//charBody.transform.setVelocity(0, 0);
         //movement
         if(directionInput.up.isDown)
         {
+			charBody.transform.setVelocity(0, -speed);
             y-=speed;
         }
           if(directionInput.down.isDown)
         {
-            y+=speed;
+            charBody.transform.setVelocity(0, speed);
         }
         if(directionInput.right.isDown)
         {
-            x+=speed;
+           charBody.transform.setVelocity(speed, 0);
         }
         if(directionInput.left.isDown)
         {
-            x-=speed;
+            charBody.transform.setVelocity(-speed, 0);
         }
         Stage.cam.x += ((x-canvas.width/2)-Stage.cam.x)/10;
         Stage.cam.y += ((y-canvas.height/2)-Stage.cam.y)/10;
 		
-		charBody.transform.position.x = x;
-		charBody.transform.position.y = y;
+		
     }
 }

@@ -36,6 +36,7 @@ Looper.tick = function()
 	{
 		Looper.dt = Looper.dt - Looper.step;
 		Looper.emitEvent(Looper.EVENT_LOGIC_TICK, {step:Looper.step});
+		Physics.doCollisions();//Physics should always be done last
 	}
 	Looper.emitEvent(Looper.EVENT_DRAW_TICK);
 	Looper.last = Looper.now;

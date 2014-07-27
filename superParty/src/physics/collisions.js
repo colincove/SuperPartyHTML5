@@ -1,7 +1,8 @@
 var Collisions = {};
 
 setupCollisionMethods(Collisions);
-Looper.addEventListener(Looper.EVENT_LOGIC_TICK, Collisions.doCollisions);
+Physics.doCollisions = Collisions.doCollisions;
+//Looper.addEventListener(Looper.EVENT_LOGIC_TICK, Collisions.doCollisions);
 //mapping the type of bodies to the methods used to calculate their collisions
 Collisions.methods = {};
 
@@ -57,8 +58,9 @@ function setupCollisionMethods(obj)
 				{
 					Physics.collisionCleanup(body1, body2);
 				}
-
-			}		
+			}
+			body1.transform.position.x += body1.transform.velocity.x;
+			body1.transform.position.y += body1.transform.velocity.y;			
 		}
 	}
 	obj.noMethod = function(b, b)
