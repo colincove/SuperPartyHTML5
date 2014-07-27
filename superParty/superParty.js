@@ -76,6 +76,7 @@ SuperParty.setup = function(callback)
 	'superParty/src/physics/physics.js',
     'superParty/src/physics/collisions.js',
 	'superParty/src/physics/simpleSolver.js',
+	'superParty/src/physics/debugDraw.js',
     'superParty/src/input/input.js',
     'superParty/src/input/keyInput.js',
     'superParty/src/input/standardDirectionalInput.js'

@@ -94,8 +94,9 @@ function setupSuperContext(context)
 	ctx.bezierCurveTo = function()
 	{
 	}
-	ctx.arc = function()
+	ctx.arc = function(x,y,r,sAngle,eAngle,counterclockwise)
 	{
+		return Stage.context.arc(x-Stage.cam.x,y-Stage.cam.y,r,sAngle,eAngle,counterclockwise);
 	}
 	ctx.arcTo = function()
 	{

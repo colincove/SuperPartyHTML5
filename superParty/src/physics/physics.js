@@ -42,6 +42,7 @@ function setupPhysicsMethods(Physics)
 			{
 				trigger.emitEvent(Physics.EVENT_ON_ENTER, {other:body});
 				trigger.collisionTable[body.UUID] = body;
+				trigger.activeCollisions = trigger.activeCollisions + 1;
 			}
 		}
 		else
@@ -62,6 +63,7 @@ function setupPhysicsMethods(Physics)
 			{
 				trigger.emitEvent(Physics.EVENT_ON_EXIT, {other:body});
 				trigger.collisionTable[body.UUID] = undefined;
+				trigger.activeCollisions = trigger.activeCollisions - 1;
 			}
 		}
 	}
@@ -82,12 +84,18 @@ function setupPhysicsMethods(Physics)
 		list.push(body);
 		Physics.bodies.lists.allBodies.push(body);
 	}
+	Physics.bodies.setupBody = function(body)
+	{
+		this.addBody(body);
+		Events.setup(body);
+	}
 	Physics.bodies.config = 
 		{
 			collisionTable:{},
 			type:BodyTypes.POINT,
 			sleeping:false,
 			isTrigger:false,
+			activeCollisions:0,
 			static:false,
 			drag:1,
 			mass:1,
@@ -138,14 +146,14 @@ function setupPhysicsMethods(Physics)
 		} );
 	Physics.bodies.getPoint = function(config)
 	{
-		var body = $.extend( true, Physics.bodies.config, config, {UUID:UUID.create()} );
-		this.addBody(body);
+		var body = $.extend( true, {}, Physics.bodies.config, config, {UUID:UUID.create()} );
+		this.setupBody(body);
 		return body;
 	}
 	Physics.bodies.getCircle = function(config)
 	{
-		var body = $.extend( true, Physics.bodies.circleConfig, config, {UUID:UUID.create()} );
-		this.addBody(body);
+		var body = $.extend( true, {}, Physics.bodies.circleConfig, config, {UUID:UUID.create()} );
+		this.setupBody(body);
 		body.getWidth = function()
 		{
 			return this.scale*this.radius*2;
@@ -154,11 +162,12 @@ function setupPhysicsMethods(Physics)
 		{
 			return this.scale*this.radius*2;
 		}
+		return body;
 	}
 	Physics.bodies.getBox = function(config)
 	{
-		var body = $.extend( true, Physics.bodies.boxConfig, config, {UUID:UUID.create()} );
-		this.addBody(body);
+		var body = $.extend( true, {}, Physics.bodies.boxConfig, config, {UUID:UUID.create()} );
+		this.setupBody(body);
 		body.getWidth = function()
 		{
 			return this.scale*this.width;
@@ -167,10 +176,12 @@ function setupPhysicsMethods(Physics)
 		{
 			return this.scale*this.height;
 		}
+		return body;
 	}
 	Physics.bodies.getPolygon = function(config)
 	{
-		var body = $.extend( true, Physics.bodies.polygonConfig, config, {UUID:UUID.create()} );
-		this.addBody(body);
+		var body = $.extend( true, {}, Physics.bodies.polygonConfig, config, {UUID:UUID.create()} );
+		this.setupBody(body);
+		return body;
 	}
 }
