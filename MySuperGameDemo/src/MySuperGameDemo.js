@@ -30,28 +30,23 @@ function startGame(e)
     directionInput.right.onPress    = function(){};
 
 	var canvas 	= Stage.canvas;
-    var context = Stage.context;
+    var context = Stage.superContext;
 
 	Looper.addEventListener(Looper.EVENT_DRAW_TICK, draw);
     Looper.addEventListener(Looper.EVENT_LOGIC_TICK, update);
 	
 	function draw()
     {
-        context.drawImage(R.drawable.testImage, -Stage.cam.x, -Stage.cam.y, 500, 500);
+        context.drawImage(R.drawable.testImage, 0, 0, 500, 500);
     
         context.beginPath();
-        context.moveTo(Stage.cam.x-x, Stage.cam.y-y);
+        context.moveTo(x, y);
 
+        context.lineTo(30+x, 30+y);
+		context.setLineWidth(10);
 
-
-        
-
-        context.lineTo(30+(Stage.cam.x-x), 30+(Stage.cam.y-y));
-        context.lineWidth = 10;
-
-        // set line color
-        context.strokeStyle = '#ff0000';
-        context.stroke();
+		context.setStrokeStyle('#ff0000');
+		context.stroke();
     }
     function update()
     {
@@ -74,7 +69,7 @@ function startGame(e)
         {
             x-=speed;
         }
-        Stage.cam.x += ((x+100)-Stage.cam.x)/10;
-        Stage.cam.y += ((y+100)-Stage.cam.y)/10;
+        Stage.cam.x += ((x-canvas.width/2)-Stage.cam.x)/10;
+        Stage.cam.y += ((y-canvas.height/2)-Stage.cam.y)/10;
     }
 }

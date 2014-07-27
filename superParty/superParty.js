@@ -70,6 +70,7 @@ SuperParty.setup = function(callback)
 	'superParty/src/base/looper.js',
 	'superParty/src/rendering/rendering.js',
 	'superParty/src/rendering/simpleRenderer.js',
+	'superParty/src/rendering/superContext.js',
 	'superParty/src/resources/resources.js',
 	'superParty/src/resources/res.js',
 	'superParty/src/physics/physics.js',
@@ -102,6 +103,7 @@ window.onload = function()
 {
 	SuperParty.setup(function()
 	{
+		setupSuperContext(Stage.context);
 		SuperParty.onSetupComplete();
 	});
 }
