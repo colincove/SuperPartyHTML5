@@ -129,18 +129,18 @@ function setupPhysicsMethods(Physics)
 				}
 			}
 		};
-	Physics.bodies.circleConfig = $.extend( true, Physics.bodies.config,
+	Physics.bodies.circleConfig = $.extend( true, {}, Physics.bodies.config,
 		{
 			type:BodyTypes.CIRCLE, 
 			radius:1
 		} );
-	Physics.bodies.boxConfig = $.extend( true, Physics.bodies.config, 
+	Physics.bodies.boxConfig = $.extend( true, {}, Physics.bodies.config, 
 		{
 			type:BodyTypes.BOX, 
 			width:1, 
 			height:1
 		} );
-	Physics.bodies.polygonConfig = $.extend( true, Physics.bodies.config, 
+	Physics.bodies.polygonConfig = $.extend( true, {}, Physics.bodies.config, 
 		{
 			type:BodyTypes.POLYGON, 
 			vertices:[],
