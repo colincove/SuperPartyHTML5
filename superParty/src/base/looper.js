@@ -35,7 +35,8 @@ Looper.tick = function()
 	while(Looper.dt > Looper.step) 
 	{
 		Looper.dt = Looper.dt - Looper.step;
-		Looper.emitEvent(Looper.EVENT_LOGIC_TICK, {step:Looper.step});
+		//converts step from seconds into milliseconds. 
+		Looper.emitEvent(Looper.EVENT_LOGIC_TICK, {step:Looper.step*1000});
 		Physics.doCollisions();//Physics should always be done last
 	}
 	Looper.emitEvent(Looper.EVENT_DRAW_TICK);
