@@ -66,7 +66,9 @@ function setupPhysicsMethods(Physics)
 			if(trigger.collisionTable[body.UUID])
 			{
 				trigger.emitEvent(Physics.EVENT_ON_EXIT, {other:body});
-				trigger.collisionTable[body.UUID] = undefined;
+				trigger.addEventListener(Physics.EVENT_ON_DESTROYED, Physics.tableCleanup); 
+				delete trigger.collisionTable[body.UUID];
+				delete body.triggerTable[trigger.UUID];
 				trigger.activeCollisions = trigger.activeCollisions - 1;
 			}
 		}
