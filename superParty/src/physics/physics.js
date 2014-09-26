@@ -16,10 +16,11 @@ setupPhysicsMethods(Physics);
 //-------------------------
 //Events
 //-------------------------
-Physics.EVENT_ON_LOITER = "EVENT_ON_LOITER";//when a physics body loiters within a trigger
-Physics.EVENT_ON_ENTER 	= "EVENT_ON_ENTER";//when a physics body enters a trigger
-Physics.EVENT_ON_EXIT 	= "EVENT_ON_EXIT";//when a physics body exits a trigger
-Physics.EVENT_COLLIDE 	= "EVENT_COLLIDE";//when 2 physics bodies collide
+Physics.EVENT_ON_LOITER 	= "EVENT_ON_LOITER";//when a physics body loiters within a trigger
+Physics.EVENT_ON_ENTER 		= "EVENT_ON_ENTER";//when a physics body enters a trigger
+Physics.EVENT_ON_EXIT 		= "EVENT_ON_EXIT";//when a physics body exits a trigger
+Physics.EVENT_COLLIDE 		= "EVENT_COLLIDE";//when 2 physics bodies collide
+Physics.EVENT_ON_DESTROYED 	= "EVENT_ON_DESTROYED";//when a body has been destroyed through the physics system. 
 
 
 
@@ -43,6 +44,7 @@ function setupPhysicsMethods(Physics)
 			{
 				trigger.emitEvent(Physics.EVENT_ON_ENTER, {other:body});
 				trigger.collisionTable[body.UUID] = body;
+				body.triggerTable[trigger.UUID] = trigger;
 				trigger.activeCollisions = trigger.activeCollisions + 1;
 			}
 		}
@@ -50,6 +52,7 @@ function setupPhysicsMethods(Physics)
 		{
 			//2 physical bodies have collided. Resolve the collision in the physics world. 
 			Physics.solver.solve(body1, body2, type);
+			body1.emitEvent(Physics.EVENT_ON_ENTER, {other:body2});
 		}
 	}
 	//Collision engine calls this when 2 bodies are NOT touching.
