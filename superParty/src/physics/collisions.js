@@ -106,8 +106,8 @@ function setupCollisionMethods(obj)
 	    if (circleDistance.x <= (b.getWidth()/2)) { return true; } 
 	    if (circleDistance.y <= (b.getHeight()/2)) { return true; }
 
-	    var cornerDistance_sq = Math.pow(circleDistance.x - rect.width/2, 2) +
-	                         Math.pow(circleDistance.y - rect.height/2, 2);
+	    var cornerDistance_sq = Math.pow(circleDistance.x - b.getWidth()/2, 2) +
+	                         Math.pow(circleDistance.y - b.getHeight()/2, 2);
 
 	    return (cornerDistance_sq <= Math.pow(c.radius, 2));
 	}

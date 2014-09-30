@@ -26,13 +26,19 @@ function startGame(e)
 	
 	Physics.startDebugDraw();
 	
-	var testBody  = Physics.bodies.getCircle({radius:50,mass:5, isTrigger:false});
-	var triggerBody  = Physics.bodies.getCircle({radius:20, isTrigger:true});
+	//var testBody  = Physics.bodies.getCircle({radius:50,mass:5, isTrigger:false});
+	//var triggerBody  = Physics.bodies.getCircle({radius:20, isTrigger:true});
+
+	var testBody  = Physics.bodies.getBox({height:20, width:80, mass:5, isTrigger:false});
+	var triggerBody  = Physics.bodies.getBox({width:25, height:25, isTrigger:true});
 	
 	var userMonster = createUserMonster();
 	
 	userMonster.body.transform.position.x = 200;
 	userMonster.body.transform.position.y = 200;
+
+	testBody.transform.position.x = 50;
+	testBody.transform.position.y = 50;
 	
 	triggerBody.transform.position.x = 100;
 	triggerBody.transform.position.y = 200;

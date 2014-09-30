@@ -35,5 +35,29 @@ Physics.debugDraw = function(e)
 			Stage.superContext.setLineWidth(2);
 			Stage.superContext.stroke();
 		}
+		if(body.type == BodyTypes.BOX)
+		{
+			Stage.superContext.beginPath();
+			Stage.superContext.moveTo(
+				body.transform.position.x, 
+				body.transform.position.y);
+
+			Stage.superContext.lineTo(body.transform.position.x+body.getWidth(), body.transform.position.y);
+			Stage.superContext.lineTo(body.transform.position.x+body.getWidth(), body.transform.position.y+body.getHeight());
+			Stage.superContext.lineTo(body.transform.position.x, body.transform.position.y+body.getHeight());
+			Stage.superContext.lineTo(body.transform.position.x, body.transform.position.y);
+			
+			if(body.activeCollisions!=0)
+			{
+				Stage.superContext.setStrokeStyle('#ff0000');
+			}
+			else
+			{
+				Stage.superContext.setStrokeStyle('#00ff00');
+			}
+			
+			Stage.superContext.setLineWidth(2);
+			Stage.superContext.stroke();
+		}
 	}
 }

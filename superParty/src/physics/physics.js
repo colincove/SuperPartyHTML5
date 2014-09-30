@@ -98,6 +98,7 @@ function setupPhysicsMethods(Physics)
 	Physics.bodies.config = 
 		{
 			collisionTable:{},
+			triggerTable:{},
 			type:BodyTypes.POINT,
 			sleeping:false,
 			isTrigger:false,
@@ -111,12 +112,20 @@ function setupPhysicsMethods(Physics)
 			collisionGroup:'common',
 			getWidth:function(){return 0;},
 			getHeight:function(){return 0;},
+			getCenter:function()
+			{
+				return {
+					x:this.transform.position.x+this.getWidth()/2, 
+					y:this.transform.position.y+this.getHeight()/2
+				};
+			},
 			transform:
 			{
 				position:{x:0, y:0}, 
 				velocity: {x:0, y:0}, 
 				rotation: 0, 
 				scale:1,
+
 				applyForce:function(x, y)
 				{
 					this.velocity.x+=	x;
@@ -131,6 +140,10 @@ function setupPhysicsMethods(Physics)
 				{
 					this.position.x = x;
 					this.position.y = y;
+				},
+				move:function(x, y)
+				{
+					this.setPosition(this.position.x+x, this.position.y+y);
 				}
 			}
 		};
@@ -169,6 +182,13 @@ function setupPhysicsMethods(Physics)
 		{
 			return this.transform.scale*this.radius*2;
 		}
+		body.getCenter = function()
+		{
+			return {
+				x:this.transform.position.x, 
+				y:this.transform.position.y
+			};
+		}
 		return body;
 	}
 	Physics.bodies.getBox = function(config)
@@ -177,11 +197,11 @@ function setupPhysicsMethods(Physics)
 		this.setupBody(body);
 		body.getWidth = function()
 		{
-			return this.scale*this.width;
+			return this.transform.scale*this.width;
 		}
 		body.getHeight = function()
 		{
-			return this.scale*this.height;
+			return this.transform.scale*this.height;
 		}
 		return body;
 	}

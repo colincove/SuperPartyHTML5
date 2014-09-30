@@ -2,7 +2,8 @@ function createMonsterBasic(config)
 {
 	var monster = $.extend(true, {},config);
 	
-	monster.body = Physics.bodies.getCircle({radius:8, isTrigger:false, damp:0.2});
+	//monster.body = Physics.bodies.getCircle({radius:8, isTrigger:false, damp:0.2});
+	monster.body = Physics.bodies.getBox({width:8, height:8, isTrigger:false, damp:0.2});
 	monster.acc = 0.5;
 	monster.maxSpeed = 20;
 	monster.fric = 1.05;
@@ -43,7 +44,6 @@ function createUserMonster(config)
 	
 	Looper.addEventListener(Looper.EVENT_LOGIC_TICK, function(e)
 	{
-		console.log(monster.body.transform.velocity);
 		if(directionInput.up.isDown)
         {
 			monster.body.transform.setVelocity(monster.body.transform.velocity.x, monster.body.transform.velocity.y-monster.acc);
