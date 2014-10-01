@@ -29,7 +29,7 @@ function startGame(e)
 	//var testBody  = Physics.bodies.getCircle({radius:50,mass:5, isTrigger:false});
 	//var triggerBody  = Physics.bodies.getCircle({radius:20, isTrigger:true});
 
-	var testBody  = Physics.bodies.getBox({height:20, width:80, mass:5, isTrigger:false});
+	var testBody  = Physics.bodies.getBox({height:20, width:80, mass:5, isTrigger:false, static:true});
 	var triggerBody  = Physics.bodies.getBox({width:25, height:25, isTrigger:true});
 	
 	var userMonster = createUserMonster();

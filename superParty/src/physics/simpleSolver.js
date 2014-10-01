@@ -82,20 +82,63 @@ function setupSimpleSolverMethods(SimpleSolver)
 			height:b1.getHeight()+b2.getHeight()-(collisionBorder.bottom-collisionBorder.top)
 		}
 
+		var totalMass 	= b1.mass+b2.mass;
+		
+		
 
 		if(intersection.height>intersection.width)
 		{
 			var invert = b1.getCenter().x>b2.getCenter().x ? -1:1;
 
-			b1.transform.move(invert*-intersection.width/2, 0);
-			b2.transform.move(invert*intersection.width/2, 0);
+			var b1vd 		= intersection.width*(b2.mass/totalMass);
+			var b2vd 		= intersection.width - b1vd;
+
+			b1vd = intersection.width*(b1.mass/totalMass);
+			b2vd = intersection.width - b1vd;
+
+			var x1 = invert*-b2vd;
+			var x2 = invert*b1vd;	
+
+			if(b1.static)
+			{
+				x1 = 0;
+				x2 = invert*intersection.width;
+			}
+			else if(b2.static)
+			{
+				x1 = invert*-intersection.width;
+				x2 = 0;
+			}
+
+			b1.transform.move(x1, 0);
+			b2.transform.move(x2, 0);
 		}
 		else
 		{
 			var invert = b1.getCenter().y>b2.getCenter().y ? -1:1;
 
-			b1.transform.move(0, invert*-intersection.height/2);
-			b2.transform.move(0,invert*intersection.height/2);
+			var b1vd 		= intersection.height*(b2.mass/totalMass);
+			var b2vd 		= intersection.height - b1vd;
+
+			b1vd = intersection.height*(b1.mass/totalMass);
+			b2vd = intersection.height - b1vd;	
+
+			var y1 = invert*-b2vd;
+			var y2 = invert*b1vd;	
+
+			if(b1.static)
+			{
+				y1 = 0;
+				y2 = invert*intersection.height;
+			}
+			else if(b2.static)
+			{
+				y1 = invert*-intersection.height;
+				y2 = 0;
+			}
+
+			b1.transform.move(0, y1);
+			b2.transform.move(0,y2);
 
 		}
 		
