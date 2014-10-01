@@ -60,7 +60,9 @@ function setupCollisionMethods(obj)
 				}
 			}
 			body1.transform.position.x += body1.transform.velocity.x;
-			body1.transform.position.y += body1.transform.velocity.y;			
+			body1.transform.position.y += body1.transform.velocity.y;
+
+			body1.transform.setVelocity(body1.transform.velocity.x/body1.fric, body1.transform.velocity.y/body1.fric);		
 		}
 	}
 	obj.noMethod = function(b, b)
@@ -107,7 +109,7 @@ function setupCollisionMethods(obj)
 	    if (circleDistance.y <= (b.getHeight()/2)) { return true; }
 
 	    var cornerDistance_sq = Math.pow(circleDistance.x - b.getWidth()/2, 2) +
-	                         Math.pow(circleDistance.y - b.getHeight()/2, 2);
+	                         Math.pow(circleDistance.y - b.get/2, 2);
 
 	    return (cornerDistance_sq <= Math.pow(c.radius, 2));
 	}

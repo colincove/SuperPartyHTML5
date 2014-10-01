@@ -105,6 +105,7 @@ function setupPhysicsMethods(Physics)
 			activeCollisions:0,
 			static:false,
 			drag:1,
+			fric:1.25,
 			damp:1,
 			mass:1,
 			density:1, 

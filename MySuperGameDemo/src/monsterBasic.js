@@ -6,14 +6,13 @@ function createMonsterBasic(config)
 	monster.body = Physics.bodies.getBox({width:8, height:8, isTrigger:false, damp:0.2});
 	monster.acc = 0.5;
 	monster.maxSpeed = 20;
-	monster.fric = 1.05;
+	monster.body.fric = 1.5;
 	Looper.addEventListener(Looper.EVENT_DRAW_TICK, function(e)
 	{
 		Stage.superContext.drawImage(R.drawable.monster, monster.body.transform.position.x, monster.body.transform.position.y, 20,20);
 	});
 	Looper.addEventListener(Looper.EVENT_LOGIC_TICK, function(e)
 	{
-		monster.body.transform.setVelocity(monster.body.transform.velocity.x/monster.fric, monster.body.transform.velocity.y/monster.fric);
 		if(monster.body.transform.velocity.x>monster.maxSpeed)
 		{
 			monster.body.transform.velocity.x = monster.maxSpeed;
