@@ -103,11 +103,13 @@ function setupSimpleSolverMethods(SimpleSolver)
 			{
 				x1 = 0;
 				x2 = invert*intersection.width;
+				b2.transform.setVelocity(0, b2.transform.velocity.y/b2.fric);
 			}
 			else if(b2.static)
 			{
 				x1 = invert*-intersection.width;
 				x2 = 0;
+				b1.transform.setVelocity(0, b1.transform.velocity.y/b2.fric);
 			}
 
 			b1.transform.move(x1, 0);
@@ -130,11 +132,13 @@ function setupSimpleSolverMethods(SimpleSolver)
 			{
 				y1 = 0;
 				y2 = invert*intersection.height;
+				b2.transform.setVelocity(b2.transform.velocity.x/b2.fric, 0);
 			}
 			else if(b2.static)
 			{
 				y1 = invert*-intersection.height;
 				y2 = 0;
+				b1.transform.setVelocity(b1.transform.velocity.x/b2.fric, 0);
 			}
 
 			b1.transform.move(0, y1);

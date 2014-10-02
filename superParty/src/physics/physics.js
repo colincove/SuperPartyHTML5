@@ -10,6 +10,7 @@ var BodyTypes 			= new Enum('CIRCLE', 'BOX', 'POLYGON', 'POINT');
 Physics.bodies 			= {};
 Physics.bodies.lists 	= {allBodies:[]};
 Physics.solver 			= {solve:function(body1, body2){}};
+Physics.gravity			= {x:0, y:1};
 Physics.doCollisions 	= function(){};
 
 setupPhysicsMethods(Physics);
@@ -104,8 +105,8 @@ function setupPhysicsMethods(Physics)
 			isTrigger:false,
 			activeCollisions:0,
 			static:false,
-			drag:1,
-			fric:1.25,
+			drag:1.1,
+			fric:1.00,
 			damp:1,
 			mass:1,
 			density:1, 

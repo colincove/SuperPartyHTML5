@@ -31,14 +31,25 @@ function startGame(e)
 
 	var testBody  = Physics.bodies.getBox({height:20, width:80, mass:5, isTrigger:false, static:true});
 	var triggerBody  = Physics.bodies.getBox({width:25, height:25, isTrigger:true});
+	var ground  = Physics.bodies.getBox({height:20, width:500, mass:5, isTrigger:false, static:true});
+	var ground2  = Physics.bodies.getBox({height:20, width:500, mass:5, isTrigger:false, static:true});
 	
 	var userMonster = createUserMonster();
 	
 	userMonster.body.transform.position.x = 200;
 	userMonster.body.transform.position.y = 200;
 
+	userMonster.body.transform.setVelocity(10, 0);
+	userMonster.body.drag = 1.01;
+	userMonster.body.fric = 1.05;
+
 	testBody.transform.position.x = 50;
 	testBody.transform.position.y = 50;
+
+	ground.transform.position.x = -50;
+	ground.transform.position.y = 300;
+	ground2.transform.position.x = 200;
+	ground2.transform.position.y = 400;
 	
 	triggerBody.transform.position.x = 100;
 	triggerBody.transform.position.y = 200;
@@ -54,8 +65,8 @@ function startGame(e)
     }
     function update()
     {
-        Stage.cam.x += ((userMonster.body.transform.position.x-canvas.width/2)-Stage.cam.x)/10;
-        Stage.cam.y += ((userMonster.body.transform.position.y-canvas.height/2)-Stage.cam.y)/10;
+        Stage.cam.x += ((userMonster.body.transform.position.x-canvas.width/2)-Stage.cam.x)/5;
+        Stage.cam.y += ((userMonster.body.transform.position.y-canvas.height/2)-Stage.cam.y)/5;
 		
 		
     }

@@ -31,6 +31,22 @@ function setupCollisionMethods(obj)
 		for(var i = 0;i<bodyList.length;i++)
 		{
 			var body1 = bodyList[i];
+
+			if(!body1.static && !body1.isTrigger) 
+			{
+				body1.transform.move(body1.transform.velocity.x, body1.transform.velocity.y);
+
+				body1.transform.setVelocity(
+					body1.transform.velocity.x/body1.drag+
+					Physics.gravity.x, 
+					body1.transform.velocity.y/body1.drag+
+					Physics.gravity.y);	
+			}
+		}
+		for(var i = 0;i<bodyList.length;i++)
+		{
+			var body1 = bodyList[i];
+			
 			for(var j = i+1; j<bodyList.length;j++)
 			{
 				var body2 = bodyList[j];
@@ -59,10 +75,7 @@ function setupCollisionMethods(obj)
 					Physics.collisionCleanup(body1, body2);
 				}
 			}
-			body1.transform.position.x += body1.transform.velocity.x;
-			body1.transform.position.y += body1.transform.velocity.y;
 
-			body1.transform.setVelocity(body1.transform.velocity.x/body1.fric, body1.transform.velocity.y/body1.fric);		
 		}
 	}
 	obj.noMethod = function(b, b)
