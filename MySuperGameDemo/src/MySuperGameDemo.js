@@ -1,5 +1,5 @@
 SuperParty.onSetupComplete = doSetup;
-
+SuperParty.projectName = "MySuperGameDemo";
 
 
 function doSetup()
@@ -18,7 +18,7 @@ function init()
 function startGame(e)
 {
 	setupLevel();
-	var canvas 	= Stage.canvas;
+	/*var canvas 	= Stage.canvas;
     var context = Stage.superContext;
 
 	Looper.addEventListener(Looper.EVENT_DRAW_TICK, draw);
@@ -69,5 +69,7 @@ function startGame(e)
         Stage.cam.y += ((userMonster.body.transform.position.y-canvas.height/2)-Stage.cam.y)/5;
 		
 		
-    }
+    }*/
+    var testObj = Prefab.instantiate(Prefab.prefabs['testPrefab']);
+    testObj.message("MyMessage", {myLittleMessage:"POOP"});
 }

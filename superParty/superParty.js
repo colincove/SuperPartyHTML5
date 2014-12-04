@@ -1,4 +1,4 @@
-var SuperParty = {};
+var SuperParty = {projectName:""};
 
 SuperParty.EVENT_START_SETUP = 'EVENT_START_SETUP';
 
@@ -62,24 +62,31 @@ SuperParty.setup = function(callback)
 {
 
     SuperParty.setupCallback = callback;
+    
+    //load framework scripts to run the game
     SuperParty.loadScripts(SuperParty.init, [
-	'superParty/lib/uuid.js', 
-	'superParty/src/base/events.js',
-	'superParty/src/base/linkedList.js',
-	'superParty/src/base/stage.js', 
-	'superParty/src/base/looper.js',
-	'superParty/src/rendering/rendering.js',
-	'superParty/src/rendering/simpleRenderer.js',
-	'superParty/src/rendering/superContext.js',
-	'superParty/src/resources/resources.js',
-	'superParty/src/resources/res.js',
-	'superParty/src/physics/physics.js',
-    'superParty/src/physics/collisions.js',
-	'superParty/src/physics/simpleSolver.js',
-	'superParty/src/physics/debugDraw.js',
-    'superParty/src/input/input.js',
-    'superParty/src/input/keyInput.js',
-    'superParty/src/input/standardDirectionalInput.js'
+        'superParty/lib/uuid.js', 
+        'superParty/src/base/events.js',
+        'superParty/src/base/linkedList.js',
+        'superParty/src/base/stage.js', 
+        'superParty/src/base/looper.js',
+        'superParty/src/rendering/rendering.js',
+        'superParty/src/rendering/simpleRenderer.js',
+        'superParty/src/rendering/superContext.js',
+        'superParty/src/resources/resources.js',
+        'superParty/src/resources/res.js',
+        'superParty/src/physics/physics.js',
+        'superParty/src/physics/collisions.js',
+        'superParty/src/physics/simpleSolver.js',
+        'superParty/src/physics/debugDraw.js',
+        'superParty/src/input/input.js',
+        'superParty/src/input/keyInput.js',
+        'superParty/src/input/standardDirectionalInput.js',      
+        'superParty/src/objects/prefab.js',
+        'superParty/src/objects/scriptLoader.js',
+        'superParty/src/objects/components/components.js', 
+        'superParty/src/objects/components/script.js', 
+        'superParty/src/objects/components/body.js'
 	]);
 }
 
@@ -102,11 +109,59 @@ function Enum()
 }
 window.onload = function()
 {
-	SuperParty.setup(function()
-	{
-		setupSuperContext(Stage.context);
-		SuperParty.onSetupComplete();
-	});
+	SuperParty.setup(setupComplete);
+    var configLength = 0;
+    var configCounter = 0;
+    function setupComplete()
+    {
+        setupSuperContext(Stage.context);
+		
+        configureProject();
+    }
+    function configureProject()
+    {
+         loadConfigFile(SuperParty.projectName.concat('/config/scripts.csv'), scriptsConfigLoaded);
+        loadConfigFile(SuperParty.projectName.concat('/config/prefabs.csv'), prefabsConfigLoaded);
+    }
+    function loadConfigFile(url, success, fail)
+    {
+        configLength++;
+        var jqxhr = $.get(url, success);
+        jqxhr.fail(onConfigFail);
+    }
+    function scriptsConfigLoaded(data)
+    {
+        var urls = [];
+        var data = data.split("\n");//splt text file from lines into an array
+        for(var i in data)
+        {
+            urls.push(SuperParty.projectName.concat('/src/scripts/', data[i]));
+        }
+        ScriptLoader.load(urls, configComplete);
+    }
+    function prefabsConfigLoaded(data)
+    {
+        var urls = [];
+        var data = data.split("\n");//splt text file from lines into an array
+        for(var i in data)
+        {
+            urls.push(SuperParty.projectName.concat('/src/prefabs/', data[i]));
+        }
+        Prefab.load(urls, configComplete);
+    }
+
+    function configComplete()
+    {
+        if(++configCounter == configLength)
+        {
+             SuperParty.onSetupComplete(); 
+        }
+       
+    }
+    function onConfigFail()
+    {
+        console.error("Project configuration failed.");
+    }
 }
 
 
