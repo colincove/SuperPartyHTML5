@@ -32,30 +32,9 @@ Prefab.instantiate = function(def)
 }
 Prefab.load = function(urls, callback)
 {
-    var numScripts;
-    var scriptsLoaded = 0;
-    if(urls instanceof Array)
-    {
-        numScripts = urls.length;
-        for(var i in urls)
-        {
-            loadUrl(urls[i], scriptLoaded);
-        }
-    }
-    else
-    {
-        loadUrl(urls, scriptLoaded);
-    }
-    function scriptLoaded(url, data)
+    FileLoader.readFile(urls, fileLoaded, callback);
+    function fileLoaded(url, data)
     {
         Prefab.prefabs[url.substring(url.lastIndexOf('/')+1).split('.')[0]] = $.parseJSON(data);
-        if(++scriptsLoaded == numScripts)
-        {
-            callback();
-        }
-    }
-    function loadUrl(url, callback)
-    {
-        $.get(url, function(data) {callback(url, data)});
     }
 }

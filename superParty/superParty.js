@@ -86,7 +86,8 @@ SuperParty.setup = function(callback)
         'superParty/src/objects/scriptLoader.js',
         'superParty/src/objects/components/components.js', 
         'superParty/src/objects/components/script.js', 
-        'superParty/src/objects/components/body.js'
+        'superParty/src/objects/components/body.js',
+        'superParty/src/utils/fileLoader.js'
 	]);
 }
 
