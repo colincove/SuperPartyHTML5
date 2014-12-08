@@ -166,7 +166,28 @@ function setupPhysicsMethods(Physics)
 			vertices:[],
 			getVertexCount:function(){return this.vertices.length;}
 		} );
-	Physics.bodies.getPoint = function(config)
+    Physics.bodies.getBody = function(type, config)
+	{
+        if (type == BodyTypes.POINT)
+        {
+            return Physics.bodies.getPoint(config);
+        }
+        else if (type == BodyTypes.CIRCLE)
+        {
+            return Physics.bodies.getCircle(config);
+        }
+        else if (type == BodyTypes.BOX)
+        {
+            return Physics.bodies.getBox(config);
+        }
+        else if (type == BodyTypes.POLYGON)
+        {
+            return Physics.bodies.getPolygon(config);
+        }
+        
+		return null;
+	}
+    Physics.bodies.getPoint = function(config)
 	{
 		var body = $.extend( true, {}, Physics.bodies.config, config, {UUID:UUID.create()} );
 		this.setupBody(body);

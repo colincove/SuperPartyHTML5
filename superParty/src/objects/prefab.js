@@ -4,20 +4,51 @@ Prefab.prefabs = {};
 
 Prefab.instantiate = function(def)
 {
-    var prefab = {};
-    prefab.scripts = [];
-    var components = def.components;
-    var scriptLoader = ScriptLoader;
-    for(var i in components)
+    var gameObject = {};
+   
+    //------------------------------------------------------------------------------//
+    //----------------------------Load scripts -------------------------------------//
+    //------------------------------------------------------------------------------//
+    gameObject.scripts = [];
+    var scripts = def.scripts;
+    for(var i in scripts)
     {
-        prefab.scripts.push(Components.createScript(components[i], prefab));
+        gameObject.scripts.push(Components.createScript(scripts[i], gameObject));
+    }
+    //------------------------------------------------------------------------------//
+    //----------------------------Load Body-----------------------------------------//
+    //------------------------------------------------------------------------------//
+    var bodyDef = def.body;
+    
+    if(bodyDef)
+    {
+        gameObject.body         = Physics.bodies.getBody(eval(bodyDef.type), $.extend(bodyDef.config, {isTrigger:false}));
+        gameObject.transform    = gameObject.body.transform;
     }
     
-    prefab.message = function(msg, data)
+    //------------------------------------------------------------------------------//
+    //----------------------------Load Body-----------------------------------------//
+    //------------------------------------------------------------------------------//
+    var triggers        = def.triggers;
+    gameObject.triggers = [];
+    if(triggers)
     {
-        for(var i in prefab.scripts)
+        for(var i in triggers)
         {
-            prefab.scripts[i].message(msg, data);
+            var trigger = triggers[i];
+            gameObject[trigger.name] = Physics.bodies.getBody(eval(bodyDef.type), $.extend(trigger.config, {isTrigger:true}));
+            gameObject.triggers.push(gameObject[trigger.name]);
+        }
+    }
+    
+    //------------------------------------------------------------------------------//
+    //----------------------------Messaging-----------------------------------------//
+    //------------------------------------------------------------------------------//
+    gameObject.message = function(msg, data)
+    {
+        for(var i in gameObject.scripts)
+        {
+            gameObject.scripts[i].message(msg, data);
         }
     }
     
@@ -25,10 +56,10 @@ Prefab.instantiate = function(def)
     
     function update(e)
     {
-         prefab.message("update", e);
+         gameObject.message("update", e);
     }
     
-    return prefab;
+    return gameObject;
 }
 Prefab.load = function(urls, callback)
 {
@@ -36,5 +67,6 @@ Prefab.load = function(urls, callback)
     function fileLoaded(url, data)
     {
         Prefab.prefabs[url.substring(url.lastIndexOf('/')+1).split('.')[0]] = $.parseJSON(data);
+        //Prefab.prefabs[url.substring(url.lastIndexOf('/')+1).split('.')[0]] = eval(data);
     }
 }
