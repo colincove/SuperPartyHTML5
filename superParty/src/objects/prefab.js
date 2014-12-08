@@ -21,6 +21,13 @@ Prefab.instantiate = function(def)
         }
     }
     
+    Looper.addEventListener(Looper.EVENT_LOGIC_TICK, update);
+    
+    function update(e)
+    {
+         prefab.message("update", e);
+    }
+    
     return prefab;
 }
 Prefab.load = function(urls, callback)

@@ -14,7 +14,15 @@ Components.createScript = function(scriptName, gameObject)
         //data needs to be in JSON form
         var stringData = JSON.stringify(data);
         var call = msg + "(data);";
-        eval(call);
+        try
+        {
+            eval(call); 
+        }
+        catch(e)
+        {
+            return;
+        }
+       
     }
     return script;
 }

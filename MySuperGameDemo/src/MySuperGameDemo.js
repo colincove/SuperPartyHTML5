@@ -71,5 +71,5 @@ function startGame(e)
 		
     }*/
     var testObj = Prefab.instantiate(Prefab.prefabs['testPrefab']);
-    testObj.message("MyMessage", {myLittleMessage:"POOP"});
+    testObj.message("MyMessageBrake", {myLittleMessage:"POOP"});
 }
