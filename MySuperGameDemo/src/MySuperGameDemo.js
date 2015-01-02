@@ -73,4 +73,8 @@ function startGame(e)
     Physics.startDebugDraw();
     var testObj = Prefab.instantiate(Prefab.prefabs['testPrefab']);
     testObj.message("MyMessageBrake", {myLittleMessage:"POOP"});
+    
+    var testThing = {test:{testAgain:1}, thing:5};
+    
+    var testAgain = eval("({test:{testAgain:1}, thing:5})");
 }
