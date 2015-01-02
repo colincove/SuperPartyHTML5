@@ -10,12 +10,12 @@ Prefab.instantiate = function(def)
     //----------------------------Load scripts -------------------------------------//
     //------------------------------------------------------------------------------//
     
-    gameObject.scripts  = [];
+    gameObject.scripts  = {};
     var scripts         = def.scripts;
     
     for(var i in scripts)
     {
-        gameObject.scripts.push(Components.createScript(scripts[i], gameObject));
+        gameObject.scripts[i] = Components.createScript(i, gameObject, scripts[i]);
     }
     
     //------------------------------------------------------------------------------//
@@ -30,18 +30,27 @@ Prefab.instantiate = function(def)
     }
     
     //------------------------------------------------------------------------------//
-    //----------------------------Load Body-----------------------------------------//
+    //----------------------------Load Triggers-------------------------------------//
     //------------------------------------------------------------------------------//
     var triggers        = def.triggers;
-    gameObject.triggers = [];
+    gameObject.triggers = {};
     if(triggers)
     {
         for(var i in triggers)
         {
             var trigger = triggers[i];
-            gameObject[trigger.name] = Physics.bodies.getBody(bodyDef.type, $.extend(trigger.config, {isTrigger:true}));
-            gameObject.triggers.push(gameObject[trigger.name]);
+            gameObject.triggers[i] = Physics.bodies.getBody(bodyDef.type, $.extend(trigger.config, {isTrigger:true}));
         }
+    }
+    
+    //------------------------------------------------------------------------------//
+    //----------------------------Load Mappings-------------------------------------//
+    //------------------------------------------------------------------------------//
+        
+    for(var i in def.mappings)
+    {
+        var path = i.split(".");
+        gameObject.scripts[path[0]].map(path[path.length-1], eval("gameObject."+def.mappings[i]));
     }
     
     //------------------------------------------------------------------------------//
@@ -55,6 +64,13 @@ Prefab.instantiate = function(def)
             gameObject.scripts[i].message(msg, data);
         }
     }
+        
+    //----------------------------Setup Complete------------------------------------//
+    gameObject.message("Setup", {});
+    
+    //------------------------------------------------------------------------------//
+    //----------------------------Events--------------------------------------------//
+    //------------------------------------------------------------------------------//
     
     Looper.addEventListener(Looper.EVENT_LOGIC_TICK, update);
     

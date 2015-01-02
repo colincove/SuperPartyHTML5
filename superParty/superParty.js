@@ -27,7 +27,7 @@ SuperParty.loadScripts = function(init, scripts)
 
     function onScriptSuccess()
     {
-        var scriptLoader = SuperParty.scriptLoaders[loaderIndex]
+        var scriptLoader = SuperParty.scriptLoaders[loaderIndex];
         var loaded = SuperParty.scriptLoaders[loaderIndex].loaded;
 
         if( loaded ==  SuperParty.scriptLoaders[loaderIndex].scripts.length-1)
@@ -121,7 +121,7 @@ window.onload = function()
     }
     function configureProject()
     {
-         loadConfigFile(SuperParty.projectName.concat('/config/scripts.csv'), scriptsConfigLoaded);
+        loadConfigFile(SuperParty.projectName.concat('/config/scripts.csv'), scriptsConfigLoaded);
         loadConfigFile(SuperParty.projectName.concat('/config/prefabs.csv'), prefabsConfigLoaded);
     }
     function loadConfigFile(url, success, fail)
@@ -134,10 +134,19 @@ window.onload = function()
     {
         var urls = [];
         var data = data.split("\n");//splt text file from lines into an array
+        
+        //load scripts defined by the project
         for(var i in data)
         {
             urls.push(SuperParty.projectName.concat('/src/scripts/', data[i]));
         }
+        
+        //load scripts that are defined by the framework
+        for(var i in SuperParty.frameworkScriptUrls)
+        {
+            urls.push("superParty/scripts/".concat(SuperParty.frameworkScriptUrls[i]));
+        }
+        
         ScriptLoader.load(urls, configComplete);
     }
     function prefabsConfigLoaded(data)
@@ -164,5 +173,5 @@ window.onload = function()
         console.error("Project configuration failed.");
     }
 }
-
+SuperParty['frameworkScriptUrls'] = ["physics/stiffTriggerFollow.js"];
 
